@@ -1,5 +1,6 @@
-import Navbar from '@/components/navbar'
 import React from 'react'
+import Navbar from '@/components/navbar'
+import Slidebar from '@/components/slidebar'
 
 const DashboardLayout = ({
     children
@@ -8,7 +9,7 @@ const DashboardLayout = ({
     <div className='h-full relative'>
         <div className='hidden h-full md:flex md:flex-col md:fixed
         md:w-72 md:inset-y-0 z-[80] bg-gray-900'>
-            <div>Hello Sidebar</div>
+            <Slidebar></Slidebar>
         </div>
         <main className='md:pl-72'>
             <Navbar></Navbar>

@@ -13,6 +13,8 @@ import {
   Settings, 
   VideoIcon 
 } from 'lucide-react';
+import { usePathname } from 'next/navigation'
+
 const montserrat = Montserrat({
   weight:"600",
   subsets:["latin"]
@@ -61,6 +63,8 @@ const routes = [
   },
 ]
 const Slidebar = () => {
+  const pathname = usePathname();
+  
   return (
     <div className='space-y-4 py-4 flex flex-col h-full
     bg-[#111827] text-white'>
@@ -82,8 +86,8 @@ const Slidebar = () => {
             <Link  
               href={route.href}
               key={route.href}
-              className='text-sm flex p-3 w-fulljustify-start font-medium cursor-pointer
-              hover:text-white hover:bg-white/10 rounded-lg transition '
+              className={cn("text-sm flex p-3 w-fulljustify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
+              pathname===route.href?'text-white bg-white/10':'') }
             >
               <div className='flex items-center flex-1'>
                 <route.icon className={cn("w-6 h-6 mr-3",route.color)} />

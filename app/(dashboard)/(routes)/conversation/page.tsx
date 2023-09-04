@@ -1,4 +1,5 @@
 "use client";
+import {useState} from 'react'
 import Heading from '@/components/heading'
 import {MessageSquare} from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -9,8 +10,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form,FormField, FormItem ,FormControl} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import axios from "axios"
 
 const ConversationPage = () => {
+    const router = useRouter()
+    const [messages, setMessages] = useState<any>([])
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -20,6 +26,24 @@ const ConversationPage = () => {
     const isLoading = form.formState.isSubmitting;
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log(values)
+        try{
+            const userMessage = {
+                role: "user",
+                content: values.prompt,
+            }
+            const newMessages = [...messages,userMessage]
+            const response = await axios.post("/api/conversation",{
+                messages: newMessages,
+            })
+            setMessages((current:any) => [...current,userMessage,response.data])
+            
+            // form.reset()
+
+        }catch(error:any){
+            console.log("error",error)
+        } finally {
+            router.refresh()
+        }
     }
     return (
         <div>
@@ -59,6 +83,9 @@ const ConversationPage = () => {
                             </Button>
                         </form>
                     </Form>
+                </div>
+                <div className='space-y-4 mt-4'>
+                    content
                 </div>
             </div>
         </div>
